@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "100877724192",
+    "project_id": "project-mma301",
+    "storage_bucket": "project-mma301.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:100877724192:android:91949e532c77a78273ea45",
+        "android_client_info": {
+          "package_name": "com.mma.project301"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr5w-W-yrm6gSuUfhprD7_MhDXYzIonDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
