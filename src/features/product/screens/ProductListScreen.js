@@ -1,22 +1,42 @@
-import React from "react";
-import { View, FlatList, StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { View, FlatList, StyleSheet, ActivityIndicator, Text } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchProducts } from "../../../store/slices/productSlice";
 import ProductCard from "../components/ProductCard";
 
-const products = [
-  { id: "1", name: "Giày Nike", oldPrice: 2000000, newPrice: 1500000, discount: 25, image: "https://via.placeholder.com/150" },
-  { id: "2", name: "Giày Adidas", oldPrice: 1800000, newPrice: 1200000, discount: 33, image: "https://via.placeholder.com/150" },
-  { id: "3", name: "Áo Puma", oldPrice: 800000, newPrice: 400000, discount: 50, image: "https://via.placeholder.com/150" },
-  { id: "4", name: "Quần Jogger", oldPrice: 600000, newPrice: 450000, discount: 25, image: "https://via.placeholder.com/150" },
-];
-
 export default function ProductListScreen() {
+  const dispatch = useDispatch();
+  const { products, loading, error } = useSelector((state) => state.product);
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  if (loading && !products.length) {
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator size="large" color="#0066cc" />
+      </View>
+    );
+  }
+
+  if (error && !products.length) {
+    return (
+      <View style={styles.center}>
+        <Text style={styles.errorText}>{error}</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <FlatList
         data={products}
         renderItem={({ item }) => <ProductCard product={item} />}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id || item.id}
         numColumns={2}
+        refreshing={loading}
+        onRefresh={() => dispatch(fetchProducts())}
       />
     </View>
   );
@@ -24,4 +44,6 @@ export default function ProductListScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f5f5f5", padding: 10 },
+  center: { flex: 1, justifyContent: "center", alignItems: "center" },
+  errorText: { color: "red", fontSize: 16 },
 });
