@@ -109,6 +109,7 @@ export default function LoginScreen({ navigation }) {
                   secureTextEntry={!showPassword}
                   value={password}
                   onChangeText={setPassword}
+                  autoCapitalize="none"
                   onFocus={() => setFocusedField("password")}
                   onBlur={() => setFocusedField(null)}
                 />

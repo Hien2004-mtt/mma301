@@ -40,9 +40,8 @@ export default function RegisterScreen({ navigation }) {
     setLoading(true);
     try {
       await registerUser(form.name, form.email, form.password, form.phone, form.address);
-      Alert.alert("🎉 Thành công!", "Tài khoản đã được tạo. Hãy đăng nhập!", [
-        { text: "Đăng nhập ngay", onPress: () => navigation.replace("Login") },
-      ]);
+      Alert.alert("🎉 Thành công!", "Tài khoản đã được tạo. Hãy đăng nhập!");
+      navigation.replace("Login");
     } catch (error) {
       Alert.alert("Đăng ký thất bại", error.message);
     } finally {
@@ -87,7 +86,7 @@ export default function RegisterScreen({ navigation }) {
                     value={form[field.key]}
                     onChangeText={(v) => setForm((p) => ({ ...p, [field.key]: v }))}
                     keyboardType={field.keyboard}
-                    autoCapitalize={field.keyboard === "email-address" ? "none" : "words"}
+                    autoCapitalize={field.key === "email" || field.key === "password" ? "none" : "words"}
                     secureTextEntry={field.secure && !showPassword}
                     onFocus={() => setFocused(field.key)}
                     onBlur={() => setFocused(null)}
