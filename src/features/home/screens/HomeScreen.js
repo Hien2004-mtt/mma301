@@ -142,6 +142,12 @@ export default function HomeScreen({ navigation }) {
             <>
               <TouchableOpacity
                 style={styles.iconBtn}
+                onPress={() => navigation.navigate("ChatRoom")}
+              >
+                <Text style={styles.iconBtnText}>💬</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.iconBtn}
                 onPress={() => navigation.navigate("Profile")}
               >
                 <Text style={styles.iconBtnText}>👤</Text>
@@ -309,6 +315,14 @@ export default function HomeScreen({ navigation }) {
                       <Text style={styles.productOldPrice}>
                         {item.oldPrice?.toLocaleString("vi-VN")}đ
                       </Text>
+                    )}
+                    {/* Hiển thị số lượng còn / hết hàng */}
+                    {item.stock === 0 ? (
+                      <View style={styles.outOfStockBadge}>
+                        <Text style={styles.outOfStockText}>Hết hàng</Text>
+                      </View>
+                    ) : (
+                      <Text style={styles.stockText}>Còn: {item.stock !== undefined ? item.stock : 10} đôi</Text>
                     )}
                   </View>
                 </TouchableOpacity>
@@ -521,6 +535,29 @@ const styles = StyleSheet.create({
     color: "#bbb",
     textDecorationLine: "line-through",
     marginTop: 2,
+  },
+
+  // Stock styles
+  outOfStockBadge: {
+    backgroundColor: "#ffebeb",
+    borderColor: "#ffcccc",
+    borderWidth: 1,
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 4,
+    alignSelf: "flex-start",
+    marginTop: 6,
+  },
+  outOfStockText: {
+    color: "#ff3b30",
+    fontSize: 10,
+    fontWeight: "bold",
+  },
+  stockText: {
+    color: "#4cd964",
+    fontSize: 11,
+    fontWeight: "600",
+    marginTop: 6,
   },
 
   // Empty

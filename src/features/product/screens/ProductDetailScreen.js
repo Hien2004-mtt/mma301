@@ -143,6 +143,15 @@ export default function ProductDetailScreen({ route, navigation }) {
             )}
           </View>
 
+          {/* Hiển thị tồn kho */}
+          <View style={styles.stockContainer}>
+            {product.stock === 0 ? (
+              <Text style={styles.outOfStockLabel}>⚠️ Trạng thái: Hết hàng</Text>
+            ) : (
+              <Text style={styles.inStockLabel}>✅ Số lượng còn: {product.stock !== undefined ? product.stock : 10} đôi</Text>
+            )}
+          </View>
+
           {/* Divider */}
           <View style={styles.divider} />
 
@@ -192,18 +201,26 @@ export default function ProductDetailScreen({ route, navigation }) {
 
       {/* Bottom action buttons */}
       <View style={styles.bottomBar}>
-        <TouchableOpacity
-          style={[styles.cartBtn, !selectedSize && styles.cartBtnHidden]}
-          onPress={handleAddToCart}
-          disabled={!selectedSize}
-        >
-          <Text style={[styles.cartBtnText, !selectedSize && styles.cartBtnTextDisabled]}>
-            🛒 Thêm giỏ
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buyBtn} onPress={handleBuyNow}>
-          <Text style={styles.buyBtnText}>⚡ Mua ngay</Text>
-        </TouchableOpacity>
+        {product.stock === 0 ? (
+          <View style={styles.outOfStockFullBtn}>
+            <Text style={styles.outOfStockFullText}>SẢN PHẨM HIỆN ĐÃ HẾT HÀNG</Text>
+          </View>
+        ) : (
+          <>
+            <TouchableOpacity
+              style={[styles.cartBtn, !selectedSize && styles.cartBtnHidden]}
+              onPress={handleAddToCart}
+              disabled={!selectedSize}
+            >
+              <Text style={[styles.cartBtnText, !selectedSize && styles.cartBtnTextDisabled]}>
+                🛒 Thêm giỏ
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buyBtn} onPress={handleBuyNow}>
+              <Text style={styles.buyBtnText}>⚡ Mua ngay</Text>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
     </View>
   );
@@ -320,4 +337,33 @@ const styles = StyleSheet.create({
     borderRadius: 14, backgroundColor: "#e94560",
   },
   buyBtnText: { fontSize: 15, fontWeight: "800", color: "#fff" },
+
+  // Stock UI styles
+  stockContainer: {
+    marginBottom: 6,
+  },
+  outOfStockLabel: {
+    color: "#ff3b30",
+    fontWeight: "bold",
+    fontSize: 13,
+  },
+  inStockLabel: {
+    color: "#22c55e",
+    fontWeight: "700",
+    fontSize: 13,
+  },
+  outOfStockFullBtn: {
+    flex: 1,
+    height: 50,
+    backgroundColor: "#ccc",
+    borderRadius: 14,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  outOfStockFullText: {
+    color: "#777",
+    fontWeight: "bold",
+    fontSize: 13,
+    letterSpacing: 0.5,
+  },
 });

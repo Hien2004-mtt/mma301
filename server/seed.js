@@ -55,6 +55,7 @@ const seedData = async () => {
         discount: 16,
         image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=500&auto=format&fit=crop&q=60",
         description: "Giày thời trang Nike Air Force 1 chính hãng thiết kế cổ điển phong cách.",
+        stock: 15,
       },
       {
         name: "Adidas Ultraboost",
@@ -63,6 +64,7 @@ const seedData = async () => {
         discount: 20,
         image: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=500&auto=format&fit=crop&q=60",
         description: "Giày chạy bộ Adidas Ultraboost êm ái, trợ lực tốt và thoáng khí.",
+        stock: 8,
       },
       {
         name: "Nike Jordan High",
@@ -71,6 +73,7 @@ const seedData = async () => {
         discount: 20,
         image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=500&auto=format&fit=crop&q=60",
         description: "Giày bóng rổ cổ cao Air Jordan phong cách hiphop cực chất.",
+        stock: 0, // Hết hàng để kiểm tra hiển thị
       },
       {
         name: "Puma Smash V2",
@@ -79,6 +82,7 @@ const seedData = async () => {
         discount: 20,
         image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=500&auto=format&fit=crop&q=60",
         description: "Giày thể thao Puma năng động trẻ trung và cực nhẹ chân.",
+        stock: 3,
       },
     ];
 

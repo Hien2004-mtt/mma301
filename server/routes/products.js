@@ -31,7 +31,7 @@ router.get("/:id", async (req, res) => {
 // Thêm mới sản phẩm (Chỉ Admin)
 router.post("/", auth, authorize(["admin"]), async (req, res) => {
   try {
-    const { name, oldPrice, newPrice, discount, image, description } = req.body;
+    const { name, oldPrice, newPrice, discount, image, description, stock } = req.body;
 
     const product = new Product({
       name,
@@ -40,6 +40,7 @@ router.post("/", auth, authorize(["admin"]), async (req, res) => {
       discount: discount || 0,
       image: image || "",
       description: description || "",
+      stock: stock !== undefined ? Number(stock) : 0,
     });
 
     await product.save();
@@ -53,7 +54,7 @@ router.post("/", auth, authorize(["admin"]), async (req, res) => {
 // Cập nhật sản phẩm (Chỉ Admin)
 router.put("/:id", auth, authorize(["admin"]), async (req, res) => {
   try {
-    const { name, oldPrice, newPrice, discount, image, description } = req.body;
+    const { name, oldPrice, newPrice, discount, image, description, stock } = req.body;
 
     let product = await Product.findById(req.params.id);
     if (!product) {
@@ -66,6 +67,7 @@ router.put("/:id", auth, authorize(["admin"]), async (req, res) => {
     product.discount = discount !== undefined ? discount : product.discount;
     product.image = image !== undefined ? image : product.image;
     product.description = description !== undefined ? description : product.description;
+    product.stock = stock !== undefined ? Number(stock) : product.stock;
 
     await product.save();
     res.json(product);

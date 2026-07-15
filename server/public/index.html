@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SneakerHub - Trang quản trị hệ thống</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: #0b0f19;
+      color: #f3f4f6;
+    }
+    .glassmorphism {
+      background: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: rgba(31, 41, 55, 0.5);
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background: rgba(156, 163, 175, 0.3);
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col overflow-x-hidden">
+
+  <!-- ==================== LOGIN VIEW ==================== -->
+  <div id="login-view" class="flex-1 flex items-center justify-center p-6">
+    <div class="glassmorphism w-full max-w-md p-8 rounded-2xl shadow-2xl relative overflow-hidden">
+      <!-- Decorative gradients -->
+      <div class="absolute -top-10 -left-10 w-40 h-40 bg-pink-500 rounded-full blur-[100px] opacity-30"></div>
+      <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-blue-500 rounded-full blur-[100px] opacity-30"></div>
+
+      <div class="text-center mb-8 relative z-10">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-tr from-pink-500 to-rose-500 text-white text-3xl font-bold mb-3 shadow-lg shadow-pink-500/20">
+          <i class="fa-solid fa-shoe-prints"></i>
+        </div>
+        <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-pink-500 to-rose-400 bg-clip-text text-transparent">SneakerHub Admin</h1>
+        <p class="text-gray-400 text-sm mt-2">Đăng nhập bằng tài khoản quản trị viên</p>
+      </div>
+
+      <form id="login-form" class="space-y-6 relative z-10">
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Địa chỉ Email</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+              <i class="fa-solid fa-envelope"></i>
+            </span>
+            <input type="email" id="login-email" required
+                   class="w-full bg-gray-900 border border-gray-700 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-pink-500 transition-all text-sm placeholder-gray-500"
+                   placeholder="admin@example.com">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Mật khẩu</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+              <i class="fa-solid fa-lock"></i>
+            </span>
+            <input type="password" id="login-password" required
+                   class="w-full bg-gray-900 border border-gray-700 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-pink-500 transition-all text-sm placeholder-gray-500"
+                   placeholder="••••••••">
+          </div>
+        </div>
+
+        <div id="login-error" class="hidden text-red-500 text-sm bg-red-950/50 border border-red-900/50 rounded-lg p-3 text-center">
+          Sai mật khẩu hoặc bạn không có quyền Admin.
+        </div>
+
+        <button type="submit"
+                class="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-semibold py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-pink-500/20 active:scale-[0.98] text-sm">
+          Đăng nhập hệ thống <i class="fa-solid fa-arrow-right ml-1"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN ADMIN PANEL ==================== -->
+  <div id="admin-panel" class="hidden flex-1 flex flex-col md:flex-row min-h-screen">
+    
+    <!-- Sidebar -->
+    <aside class="w-full md:w-64 bg-gray-950 border-r border-gray-800 flex flex-col relative z-20">
+      <!-- Sidebar Header -->
+      <div class="p-6 border-b border-gray-800 flex items-center space-x-3">
+        <span class="text-2xl text-pink-500"><i class="fa-solid fa-shoe-prints"></i></span>
+        <span class="text-xl font-bold tracking-wider text-white">SneakerHub</span>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="flex-1 p-4 space-y-1">
+        <button onclick="switchTab('dashboard')" id="tab-btn-dashboard"
+                class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all text-sm font-medium bg-gradient-to-r from-pink-500/10 to-rose-500/10 text-pink-400 border border-pink-500/20">
+          <i class="fa-solid fa-chart-line w-5"></i>
+          <span>Bảng điều khiển</span>
+        </button>
+        <button onclick="switchTab('products')" id="tab-btn-products"
+                class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all text-sm font-medium text-gray-400 hover:text-gray-200 hover:bg-gray-900 border border-transparent">
+          <i class="fa-solid fa-boxes-stacked w-5"></i>
+          <span>Quản lý sản phẩm</span>
+        </button>
+        <button onclick="switchTab('orders')" id="tab-btn-orders"
+                class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all text-sm font-medium text-gray-400 hover:text-gray-200 hover:bg-gray-900 border border-transparent">
+          <i class="fa-solid fa-receipt w-5"></i>
+          <span>Quản lý đơn hàng</span>
+        </button>
+      </nav>
+
+      <!-- Sidebar Footer (User info & logout) -->
+      <div class="p-4 border-t border-gray-800 bg-gray-950/50">
+        <div class="flex items-center space-x-3 mb-3">
+          <div class="w-10 h-10 rounded-full bg-pink-600 flex items-center justify-center font-bold text-white shadow-md">
+            AD
+          </div>
+          <div class="overflow-hidden">
+            <h4 id="admin-name" class="text-sm font-semibold text-white truncate">Administrator</h4>
+            <p id="admin-email" class="text-xs text-gray-500 truncate">admin@sneakerhub.com</p>
+          </div>
+        </div>
+        <button onclick="logoutAdmin()"
+                class="w-full flex items-center justify-center space-x-2 bg-gray-900 hover:bg-red-950/40 text-gray-400 hover:text-red-400 border border-gray-800 hover:border-red-900/40 py-2.5 px-4 rounded-xl transition-all text-xs font-semibold">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Đăng xuất</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col min-w-0 bg-gray-900/40">
+      
+      <!-- Top navbar -->
+      <header class="h-16 border-b border-gray-800 bg-gray-950/40 px-6 flex items-center justify-between">
+        <h2 id="current-view-title" class="text-lg font-bold text-white">Bảng điều khiển</h2>
+        <div class="flex items-center space-x-4">
+          <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full flex items-center space-x-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>Hệ thống online</span>
+          </span>
+        </div>
+      </header>
+
+      <!-- Content wrapper -->
+      <div class="flex-1 p-6 overflow-y-auto">
+
+        <!-- ==================== TAB: DASHBOARD ==================== -->
+        <section id="view-dashboard" class="space-y-6">
+          <!-- Stats grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Card 1 -->
+            <div class="glassmorphism p-6 rounded-2xl shadow-xl flex items-center justify-between relative overflow-hidden group hover:scale-[1.02] transition-all">
+              <div class="space-y-2">
+                <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Doanh thu</span>
+                <h3 id="stat-revenue" class="text-2xl font-black text-white">0đ</h3>
+                <p class="text-xs text-gray-500">Doanh thu bán hàng</p>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-wallet"></i>
+              </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="glassmorphism p-6 rounded-2xl shadow-xl flex items-center justify-between relative overflow-hidden group hover:scale-[1.02] transition-all">
+              <div class="space-y-2">
+                <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Đơn hàng</span>
+                <h3 id="stat-orders" class="text-2xl font-black text-white">0</h3>
+                <p class="text-xs text-gray-500">Đơn hàng trên toàn hệ thống</p>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-receipt"></i>
+              </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="glassmorphism p-6 rounded-2xl shadow-xl flex items-center justify-between relative overflow-hidden group hover:scale-[1.02] transition-all">
+              <div class="space-y-2">
+                <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Sản phẩm</span>
+                <h3 id="stat-products" class="text-2xl font-black text-white">0</h3>
+                <p class="text-xs text-gray-500">Sản phẩm đang kinh doanh</p>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-box"></i>
+              </div>
+            </div>
+            <!-- Card 4 -->
+            <div class="glassmorphism p-6 rounded-2xl shadow-xl flex items-center justify-between relative overflow-hidden group hover:scale-[1.02] transition-all">
+              <div class="space-y-2">
+                <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Khách hàng</span>
+                <h3 id="stat-users" class="text-2xl font-black text-white">0</h3>
+                <p class="text-xs text-gray-500">Tài khoản khách hàng</p>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-users"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart & Order Stats Split -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Chart Card -->
+            <div class="glassmorphism p-6 rounded-2xl shadow-xl lg:col-span-2 space-y-4">
+              <h3 class="font-bold text-white text-base"><i class="fa-solid fa-chart-simple mr-2 text-pink-500"></i>Doanh thu 6 tháng gần nhất</h3>
+              <div class="relative h-[250px] w-full flex items-center justify-center">
+                <canvas id="sales-chart" class="w-full h-full"></canvas>
+              </div>
+            </div>
+            <!-- Status Breakdown -->
+            <div class="glassmorphism p-6 rounded-2xl shadow-xl space-y-4 flex flex-col">
+              <h3 class="font-bold text-white text-base"><i class="fa-solid fa-chart-pie mr-2 text-pink-500"></i>Trạng thái đơn hàng</h3>
+              <div class="flex-1 flex flex-col justify-center space-y-4">
+                <div class="flex items-center justify-between p-3 rounded-xl bg-yellow-500/5 border border-yellow-500/10">
+                  <span class="text-yellow-400 text-sm font-medium"><i class="fa-regular fa-clock mr-2"></i>Chờ xác nhận (Pending)</span>
+                  <span id="orders-pending" class="text-white font-bold bg-yellow-500/20 px-2.5 py-0.5 rounded-full text-xs">0</span>
+                </div>
+                <div class="flex items-center justify-between p-3 rounded-xl bg-blue-500/5 border border-blue-500/10">
+                  <span class="text-blue-400 text-sm font-medium"><i class="fa-solid fa-spinner mr-2"></i>Đang xử lý (Processing)</span>
+                  <span id="orders-processing" class="text-white font-bold bg-blue-500/20 px-2.5 py-0.5 rounded-full text-xs">0</span>
+                </div>
+                <div class="flex items-center justify-between p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/10">
+                  <span class="text-emerald-400 text-sm font-medium"><i class="fa-solid fa-truck-fast mr-2"></i>Đã giao (Shipped)</span>
+                  <span id="orders-shipped" class="text-white font-bold bg-emerald-500/20 px-2.5 py-0.5 rounded-full text-xs">0</span>
+                </div>
+                <div class="flex items-center justify-between p-3 rounded-xl bg-red-500/5 border border-red-500/10">
+                  <span class="text-red-400 text-sm font-medium"><i class="fa-regular fa-circle-xmark mr-2"></i>Đã hủy (Cancelled)</span>
+                  <span id="orders-cancelled" class="text-white font-bold bg-red-500/20 px-2.5 py-0.5 rounded-full text-xs">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Orders list -->
+          <div class="glassmorphism rounded-2xl shadow-xl overflow-hidden">
+            <div class="p-6 border-b border-gray-800">
+              <h3 class="font-bold text-white text-base"><i class="fa-solid fa-clock-rotate-left mr-2 text-pink-500"></i>Các đơn hàng gần nhất</h3>
+            </div>
+            <div class="overflow-x-auto scrollbar-thin">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-gray-800 text-gray-400 text-xs uppercase font-semibold">
+                    <th class="px-6 py-4">Mã đơn hàng</th>
+                    <th class="px-6 py-4">Khách hàng</th>
+                    <th class="px-6 py-4">Thời gian</th>
+                    <th class="px-6 py-4">Tổng tiền</th>
+                    <th class="px-6 py-4">Trạng thái</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-orders-table-body" class="divide-y divide-gray-800/50 text-sm text-gray-300">
+                  <tr>
+                    <td colspan="5" class="px-6 py-8 text-center text-gray-500">Đang tải đơn hàng...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== TAB: PRODUCTS CRUD ==================== -->
+        <section id="view-products" class="hidden space-y-6">
+          <div class="flex justify-between items-center bg-gray-950/40 p-4 rounded-xl border border-gray-800">
+            <h3 class="font-semibold text-white text-sm">Danh sách giày Sneaker</h3>
+            <button onclick="openProductModal()"
+                    class="bg-pink-600 hover:bg-pink-700 text-white font-medium py-2 px-4 rounded-lg text-sm flex items-center space-x-1.5 transition-all shadow-md shadow-pink-600/10">
+              <i class="fa-solid fa-plus"></i>
+              <span>Thêm sản phẩm</span>
+            </button>
+          </div>
+
+          <!-- Products Table -->
+          <div class="glassmorphism rounded-2xl shadow-xl overflow-hidden">
+            <div class="overflow-x-auto scrollbar-thin">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-gray-800 text-gray-400 text-xs uppercase font-semibold">
+                    <th class="px-6 py-4 w-20">Ảnh</th>
+                    <th class="px-6 py-4">Tên sản phẩm</th>
+                    <th class="px-6 py-4">Giá cũ (đ)</th>
+                    <th class="px-6 py-4">Giá mới (đ)</th>
+                    <th class="px-6 py-4">Giảm giá (%)</th>
+                    <th class="px-6 py-4">Số lượng</th>
+                    <th class="px-6 py-4 max-w-xs">Mô tả</th>
+                    <th class="px-6 py-4 text-right">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="products-table-body" class="divide-y divide-gray-800/50 text-sm text-gray-300">
+                  <tr>
+                    <td colspan="7" class="px-6 py-8 text-center text-gray-500">Đang tải danh sách sản phẩm...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== TAB: ORDERS MANAGEMENT ==================== -->
+        <section id="view-orders" class="hidden space-y-6">
+          <div class="glassmorphism rounded-2xl shadow-xl overflow-hidden">
+            <div class="overflow-x-auto scrollbar-thin">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-gray-800 text-gray-400 text-xs uppercase font-semibold">
+                    <th class="px-6 py-4">Mã đơn hàng</th>
+                    <th class="px-6 py-4">Khách hàng</th>
+                    <th class="px-6 py-4 w-60">Sản phẩm</th>
+                    <th class="px-6 py-4">Địa chỉ giao hàng</th>
+                    <th class="px-6 py-4">Tổng tiền</th>
+                    <th class="px-6 py-4">Trạng thái</th>
+                    <th class="px-6 py-4 text-right">Duyệt trạng thái</th>
+                  </tr>
+                </thead>
+                <tbody id="orders-table-body" class="divide-y divide-gray-800/50 text-sm text-gray-300">
+                  <tr>
+                    <td colspan="7" class="px-6 py-8 text-center text-gray-500">Đang tải danh sách đơn hàng...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ==================== PRODUCT MODAL (ADD / EDIT) ==================== -->
+  <div id="product-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div class="glassmorphism w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden border border-gray-800 flex flex-col max-h-[90vh]">
+      <!-- Header -->
+      <div class="px-6 py-4 border-b border-gray-850 flex justify-between items-center bg-gray-950/40">
+        <h3 id="product-modal-title" class="font-bold text-white text-base">Thêm sản phẩm mới</h3>
+        <button onclick="closeProductModal()" class="text-gray-400 hover:text-white transition">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Form Body -->
+      <form id="product-form" class="p-6 space-y-4 overflow-y-auto scrollbar-thin flex-1">
+        <input type="hidden" id="product-id">
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Tên giày</label>
+          <input type="text" id="product-name" required
+                 class="w-full bg-gray-900 border border-gray-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-pink-500 text-sm transition"
+                 placeholder="Ví dụ: Nike Air Force 1">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Giá niêm yết (Giá cũ)</label>
+            <input type="number" id="product-oldPrice" required min="0" oninput="calculateDiscount()"
+                   class="w-full bg-gray-900 border border-gray-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-pink-500 text-sm transition"
+                   placeholder="Ví dụ: 2000000">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Giá bán mới (Sale)</label>
+            <input type="number" id="product-newPrice" required min="0" oninput="calculateDiscount()"
+                   class="w-full bg-gray-900 border border-gray-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-pink-500 text-sm transition"
+                   placeholder="Ví dụ: 1500000">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Tỉ lệ giảm giá (%)</label>
+          <input type="number" id="product-discount" readonly
+                 class="w-full bg-gray-850 border border-gray-800 rounded-xl py-3 px-4 text-gray-500 cursor-not-allowed text-sm focus:outline-none"
+                 placeholder="Tự động tính toán">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Số lượng tồn kho (Stock)</label>
+          <input type="number" id="product-stock" required min="0"
+                 class="w-full bg-gray-900 border border-gray-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-pink-500 text-sm transition"
+                 placeholder="Ví dụ: 10">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Đường dẫn ảnh (Image URL)</label>
+          <input type="url" id="product-image"
+                 class="w-full bg-gray-900 border border-gray-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-pink-500 text-sm transition"
+                 placeholder="https://example.com/image.jpg">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Mô tả sản phẩm</label>
+          <textarea id="product-description" rows="3"
+                    class="w-full bg-gray-900 border border-gray-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-pink-500 text-sm transition resize-none"
+                    placeholder="Mô tả chất liệu, size, form giày..."></textarea>
+        </div>
+
+        <!-- Footer actions inside form container to keep layout correct -->
+        <div class="pt-4 flex items-center justify-end space-x-3 border-t border-gray-850">
+          <button type="button" onclick="closeProductModal()"
+                  class="bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium py-2.5 px-4 rounded-xl text-sm transition">
+            Hủy bỏ
+          </button>
+          <button type="submit"
+                  class="bg-pink-600 hover:bg-pink-700 text-white font-medium py-2.5 px-5 rounded-xl text-sm transition shadow-md shadow-pink-600/10">
+            Lưu thay đổi
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Javascript Logic -->
+  <script src="admin.js"></script>
+</body>
+</html>

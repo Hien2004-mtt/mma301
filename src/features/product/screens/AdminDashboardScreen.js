@@ -34,6 +34,7 @@ export default function AdminDashboardScreen({ navigation }) {
   const [newPrice, setNewPrice] = useState("");
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
+  const [stock, setStock] = useState("10"); // Mặc định là 10
   const [submitting, setSubmitting] = useState(false);
 
   // State modal chỉnh sửa sản phẩm
@@ -44,6 +45,7 @@ export default function AdminDashboardScreen({ navigation }) {
   const [editNewPrice, setEditNewPrice] = useState("");
   const [editImage, setEditImage] = useState("");
   const [editDescription, setEditDescription] = useState("");
+  const [editStock, setEditStock] = useState("");
   const [editSubmitting, setEditSubmitting] = useState(false);
   const [updatingOrderId, setUpdatingOrderId] = useState(null);
 
@@ -95,6 +97,7 @@ export default function AdminDashboardScreen({ navigation }) {
           discount: disc > 0 ? disc : 0,
           image: image || "https://via.placeholder.com/150",
           description,
+          stock: parseInt(stock) || 0,
         })
       ).unwrap();
 
@@ -105,6 +108,7 @@ export default function AdminDashboardScreen({ navigation }) {
       setNewPrice("");
       setImage("");
       setDescription("");
+      setStock("10");
     } catch (error) {
       Alert.alert("Lỗi", error || "Không thể thêm sản phẩm.");
     } finally {
@@ -120,6 +124,7 @@ export default function AdminDashboardScreen({ navigation }) {
     setEditNewPrice(product.newPrice?.toString() || "");
     setEditImage(product.image || "");
     setEditDescription(product.description || "");
+    setEditStock(product.stock !== undefined ? product.stock.toString() : "0");
     setEditModalVisible(true);
   };
 
@@ -146,6 +151,7 @@ export default function AdminDashboardScreen({ navigation }) {
             discount: disc > 0 ? disc : 0,
             image: editImage || "https://via.placeholder.com/150",
             description: editDescription,
+            stock: parseInt(editStock) || 0,
           },
         })
       ).unwrap();
@@ -334,6 +340,13 @@ export default function AdminDashboardScreen({ navigation }) {
             />
           </View>
           <TextInput
+            placeholder="Số lượng tồn kho *"
+            style={styles.input}
+            value={stock}
+            onChangeText={setStock}
+            keyboardType="numeric"
+          />
+          <TextInput
             placeholder="Đường dẫn ảnh sản phẩm (URL)"
             style={styles.input}
             value={image}
@@ -375,6 +388,9 @@ export default function AdminDashboardScreen({ navigation }) {
                     <Text style={styles.itemOldPrice}>
                       (Gốc: {item.oldPrice?.toLocaleString("vi-VN")}đ)
                     </Text>
+                  </Text>
+                  <Text style={styles.itemStock}>
+                    {item.stock === 0 ? "⚠️ Hết hàng" : `Còn lại: ${item.stock !== undefined ? item.stock : 10} đôi`}
                   </Text>
                   {item.discount > 0 && (
                     <Text style={styles.discountLabel}>-{item.discount}% OFF</Text>
@@ -509,6 +525,13 @@ export default function AdminDashboardScreen({ navigation }) {
                 />
               </View>
               <TextInput
+                placeholder="Số lượng sản phẩm *"
+                style={styles.input}
+                value={editStock}
+                onChangeText={setEditStock}
+                keyboardType="numeric"
+              />
+              <TextInput
                 placeholder="Đường dẫn ảnh (URL)"
                 style={styles.input}
                 value={editImage}
@@ -632,6 +655,7 @@ const styles = StyleSheet.create({
   itemName: { fontSize: 15, fontWeight: "bold", color: "#333" },
   itemPrice: { fontSize: 14, color: "#009900", marginTop: 2, fontWeight: "bold" },
   itemOldPrice: { fontSize: 12, color: "#999", fontWeight: "normal" },
+  itemStock: { fontSize: 12, color: "#0066cc", marginTop: 2, fontWeight: "bold" },
   discountLabel: {
     fontSize: 12,
     color: "#fff",

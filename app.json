@@ -4,36 +4,15 @@
     "slug": "project-mma301",
     "version": "1.0.0",
     "entryPoint": "./index.js",
-
     "orientation": "portrait",
     "plugins": ["expo-notifications"],
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "package": "com.mma.project301",
-      "permissions": ["POST_NOTIFICATIONS"],
-      "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
-      }
-    },
-    "extra": {
-      "eas": {
-        "projectId": "YOUR_EXPO_PROJECT_ID"
-      }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
+      "permissions": ["POST_NOTIFICATIONS"]
     }
   }
 }

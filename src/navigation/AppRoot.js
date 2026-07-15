@@ -17,8 +17,10 @@ import CartScreen from "../features/cart/screens/CartScreen";
 import CheckoutScreen from "../features/order/screens/CheckoutScreen";
 import OrderHistoryScreen from "../features/order/screens/OrderHistoryScreen";
 import ProfileScreen from "../features/profile/screens/ProfileScreen";
+import ChatScreen from "../features/chat/screens/ChatScreen";
 
 const Stack = createNativeStackNavigator();
+
 
 export default function AppRoot() {
   const dispatch = useDispatch();
@@ -107,6 +109,11 @@ export default function AppRoot() {
           component={ProfileScreen}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="ChatRoom"
+          component={ChatScreen}
+          options={{ headerShown: false }}
+        />
 
         {/* ===== ADMIN SCREENS ===== */}
         <Stack.Screen
@@ -116,6 +123,7 @@ export default function AppRoot() {
         />
       </Stack.Navigator>
     </NavigationContainer>
+
   );
 }
 
