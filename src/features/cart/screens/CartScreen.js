@@ -7,12 +7,14 @@ import {
   StyleSheet,
   Image,
   StatusBar,
+  Alert,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { removeFromCart, clearCart, increaseQty, decreaseQty } from "../../../store/slices/cartSlice";
 
 export default function CartScreen({ navigation }) {
   const cart = useSelector((state) => state.cart.items);
+  const { isLogin } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   // Tổng tiền = giá × số lượng
@@ -147,7 +149,16 @@ export default function CartScreen({ navigation }) {
         </View>
         <TouchableOpacity
           style={styles.checkoutBtn}
-          onPress={() => navigation.navigate("Checkout")}
+          onPress={() => {
+            if (!isLogin) {
+              Alert.alert("Yêu cầu đăng nhập", "Vui lòng đăng nhập để tiến hành thanh toán.", [
+                { text: "Hủy", style: "cancel" },
+                { text: "Đăng nhập", onPress: () => navigation.navigate("Login") },
+              ]);
+              return;
+            }
+            navigation.navigate("Checkout");
+          }}
         >
           <Text style={styles.checkoutBtnText}>Thanh toán →</Text>
         </TouchableOpacity>

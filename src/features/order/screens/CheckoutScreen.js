@@ -30,9 +30,8 @@ export default function CheckoutScreen({ navigation }) {
     try {
       await dispatch(placeOrder({ products: formattedProducts, totalAmount: total })).unwrap();
       dispatch(clearCart());
-      Alert.alert("🎉 Đặt hàng thành công!", "Đơn hàng đã được tạo. Chúng tôi sẽ liên hệ sớm!", [
-        { text: "Xem đơn hàng", onPress: () => navigation.navigate("OrderHistory") },
-      ]);
+      Alert.alert("🎉 Đặt hàng thành công!", "Đơn hàng đã được tạo. Chúng tôi sẽ liên hệ sớm!");
+      navigation.reset({ index: 0, routes: [{ name: "Home" }] });
     } catch (error) {
       Alert.alert("Lỗi đặt hàng", error || "Không thể đặt hàng, thử lại sau.");
     } finally {
