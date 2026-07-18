@@ -118,13 +118,13 @@ export default function OrderHistoryScreen({ navigation }) {
 
                 {/* Products list */}
                 <View style={styles.productsList}>
-                  {item.products.map((p, idx) => (
+                  {(item.products || []).map((p, idx) => (
                     <View key={p._id || idx} style={styles.productRow}>
                       <Text style={styles.productDot}>👟</Text>
                       <Text style={styles.productName} numberOfLines={1}>{p.name}</Text>
                       <Text style={styles.productQty}>x{p.quantity || 1}</Text>
                       <Text style={styles.productPrice}>
-                        {p.price.toLocaleString("vi-VN")}đ
+                       {Number(p.price || 0).toLocaleString("vi-VN")}đ
                       </Text>
                     </View>
                   ))}
@@ -134,7 +134,7 @@ export default function OrderHistoryScreen({ navigation }) {
                 <View style={styles.cardFooter}>
                   <Text style={styles.totalLabel}>Tổng cộng</Text>
                   <Text style={styles.totalAmount}>
-                    {item.totalAmount.toLocaleString("vi-VN")}đ
+                   {Number(item.totalAmount || 0).toLocaleString("vi-VN")}đ
                   </Text>
                 </View>
               </View>

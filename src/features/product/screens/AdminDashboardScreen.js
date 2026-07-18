@@ -450,16 +450,16 @@ export default function AdminDashboardScreen({ navigation }) {
               <Text style={styles.orderInfo}>🗓️ Ngày đặt: {formatDate(item.createdAt)}</Text>
 
               <View style={styles.orderProducts}>
-                {item.products.map((p, idx) => (
+                {(item.products || []).map((p, idx) => (
                   <Text key={idx} style={styles.orderProductItem}>
-                    • {p.name} x{p.quantity || 1} — {p.price?.toLocaleString("vi-VN")}đ
+                    • {p.name} x{p.quantity || 1} — {Number(p.price || 0).toLocaleString("vi-VN")}đ
                   </Text>
                 ))}
               </View>
 
-              <Text style={styles.orderTotal}>
-                Tổng: {item.totalAmount.toLocaleString("vi-VN")} VNĐ
-              </Text>
+<Text style={styles.orderTotal}>
+  Tổng: {Number(item.totalAmount || 0).toLocaleString("vi-VN")} VNĐ
+</Text>
 
               {item.status === "pending" ? (
                 <TouchableOpacity

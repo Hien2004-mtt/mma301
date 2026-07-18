@@ -6,10 +6,20 @@ export const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
   async (_, { rejectWithValue }) => {
     try {
+      console.log("BẮT ĐẦU GỌI PRODUCTS API");
+
       const response = await axiosInstance.get("/products");
-      return response.data; // Mảng sản phẩm từ database
+
+      console.log("DỮ LIỆU API:", response.data);
+
+      return response.data;
+
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Lỗi khi tải sản phẩm.");
+      console.log("LỖI API:", error.message);
+
+      return rejectWithValue(
+        error.response?.data?.message || "Lỗi tải sản phẩm"
+      );
     }
   }
 );

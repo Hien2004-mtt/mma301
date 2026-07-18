@@ -39,25 +39,19 @@ const wss = new WebSocket.Server({ server });
 wss.on("connection", async (ws) => {
   console.log("Một người dùng kết nối WebSocket thành công");
 
-  // Gửi lịch sử tin nhắn khi kết nối
   try {
-    const history = await Message.find()
-      .sort({ createdAt: -1 })
-      .limit(50);
-    // Gửi ngược lại để tin nhắn hiển thị theo thứ tự thời gian tăng dần
+    const history = await Message.find().sort({ createdAt: -1 }).limit(50);
     ws.send(JSON.stringify({ type: "history", data: history.reverse() }));
   } catch (err) {
     console.error("Lỗi tải lịch sử chat:", err);
   }
 
-  // Nhận tin nhắn từ một client
   ws.on("message", async (rawData) => {
     try {
       const parsed = JSON.parse(rawData);
       if (parsed.type === "message") {
         const { sender, senderName, senderRole, content } = parsed;
 
-        // Lưu vào database
         const newMessage = new Message({
           sender,
           senderName,
@@ -66,7 +60,6 @@ wss.on("connection", async (ws) => {
         });
         await newMessage.save();
 
-        // Broadcast tin nhắn tới tất cả client đang online
         const broadcastPayload = JSON.stringify({
           type: "message",
           data: newMessage,
@@ -88,20 +81,22 @@ wss.on("connection", async (ws) => {
   });
 });
 
-// Kết nối MongoDB
+// Kết nối MongoDB Atlas
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/mma301";
+const MONGO_URI =
+  process.env.MONGODB_URI ||
+  "mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/mma301?retryWrites=true&w=majority";
 
 mongoose
   .connect(MONGO_URI)
   .then(() => {
-    console.log("Kết nối MongoDB thành công!");
-    server.listen(PORT, () => {
-      console.log(`Server đang chạy tại http://localhost:${PORT}`);
+    console.log("✅ Kết nối MongoDB Atlas thành công!");
+    // Lắng nghe trên 0.0.0.0 để emulator và thiết bị khác truy cập được
+    server.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server đang chạy tại http://0.0.0.0:${PORT}`);
       console.log(`Giao diện Web Admin: http://localhost:${PORT}/admin`);
     });
   })
   .catch((err) => {
-    console.error("Lỗi kết nối cơ sở dữ liệu MongoDB:", err.message);
+    console.error("❌ Lỗi kết nối cơ sở dữ liệu MongoDB Atlas:", err.message);
   });
-

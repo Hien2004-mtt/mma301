@@ -5,14 +5,23 @@
     "version": "1.0.0",
     "entryPoint": "./index.js",
     "orientation": "portrait",
-    "plugins": ["expo-notifications"],
+    "plugins": [
+      "expo-notifications"
+    ],
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "package": "com.mma.project301",
-      "permissions": ["POST_NOTIFICATIONS"]
+      "permissions": [
+        "POST_NOTIFICATIONS"
+      ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c1d27a44-5cab-4ef6-9e54-cbd94008e6b8"
+      }
     }
   }
 }

@@ -13,7 +13,8 @@ export default function CheckoutScreen({ navigation }) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = cart.reduce(
+  (sum, item) => sum + Number(item.price || 0) * Number(item.quantity || 1),0);
 
   const confirmOrder = async () => {
     if (cart.length === 0) {
@@ -83,7 +84,7 @@ export default function CheckoutScreen({ navigation }) {
                 <Text style={{ fontSize: 20 }}>👟</Text>
               </View>
               <Text style={styles.productName} numberOfLines={2}>{item.name}</Text>
-              <Text style={styles.productPrice}>{item.price.toLocaleString("vi-VN")}đ</Text>
+              <Text style={styles.productPrice}>{Number(item.price || 0).toLocaleString("vi-VN")}đ</Text>
             </View>
           ))}
         </View>

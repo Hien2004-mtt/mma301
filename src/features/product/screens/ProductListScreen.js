@@ -8,9 +8,13 @@ export default function ProductListScreen() {
   const dispatch = useDispatch();
   const { products, loading, error } = useSelector((state) => state.product);
 
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+  console.log("PRODUCT REDUX:", products);
+useEffect(() => {
+  console.log("MỞ MÀN PRODUCT LIST");
+  dispatch(fetchProducts());
+}, [dispatch]);
+
+
 
   if (loading && !products.length) {
     return (
